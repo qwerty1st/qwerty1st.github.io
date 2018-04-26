@@ -27,7 +27,7 @@ module.exports = ""
 /***/ "./src/app/about/about.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About Us</h1>\n<p>Epicodus's mission is to help people learn the skills they need to get great jobs. For us, \"great jobs\" means jobs in growing industries that pay well and provide rewarding work.\n\nBeyond the particular skills needed to get these jobs, we also aim to help our students become confident self-teachers who can adapt to changing job markets and great communicators that will work well in teams. We focus on serving people that, by birth or circumstance, don't have easy access to learning the skills they need to get these great jobs.\n\nAnd now we sell music too!</p>\n<img src=\"123.jpg\" width=\"400\" height=\"400\" />"
+module.exports = "<h1 class=\"bg-info\"><em>About Us</em></h1>\n<p>Epicodus's mission is to help people learn the skills they need to get great jobs. For us, \"great jobs\" means jobs in growing industries that pay well and provide rewarding work.\n\nBeyond the particular skills needed to get these jobs, we also aim to help our students become confident self-teachers who can adapt to changing job markets and great communicators that will work well in teams. We focus on serving people that, by birth or circumstance, don't have easy access to learning the skills they need to get these great jobs.\n\nAnd now we sell music too!</p>"
 
 /***/ }),
 
@@ -71,7 +71,7 @@ module.exports = ""
 /***/ "./src/app/album-detail/album-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  album-detail works!\n</p>\n"
+module.exports = "<p>\n  album-detail works!\n</p>\n<h2>This album has id number: {{albumId}}</h2>\n<div>\n  <h3>{{albumToDisplay.title}}</h3>\n  <h4>{{albumToDisplay.artist}}</h4>\n  <p>{{albumToDisplay.description}}</p>\n</div>"
 
 /***/ }),
 
@@ -81,6 +81,9 @@ module.exports = "<p>\n  album-detail works!\n</p>\n"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlbumDetailComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__album_service__ = __webpack_require__("./src/app/album.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -91,18 +94,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var AlbumDetailComponent = /** @class */ (function () {
-    function AlbumDetailComponent() {
+    function AlbumDetailComponent(route, location, albumService) {
+        this.route = route;
+        this.location = location;
+        this.albumService = albumService;
     }
     AlbumDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.forEach(function (urlParameters) {
+            _this.albumId = parseInt(urlParameters['id'], 10);
+        });
+        this.albumToDisplay = this.albumService.getAlbumById(this.albumId);
     };
     AlbumDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-album-detail',
             template: __webpack_require__("./src/app/album-detail/album-detail.component.html"),
-            styles: [__webpack_require__("./src/app/album-detail/album-detail.component.css")]
+            styles: [__webpack_require__("./src/app/album-detail/album-detail.component.css")],
+            providers: [__WEBPACK_IMPORTED_MODULE_3__album_service__["a" /* AlbumService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["f" /* Location */],
+            __WEBPACK_IMPORTED_MODULE_3__album_service__["a" /* AlbumService */]])
     ], AlbumDetailComponent);
     return AlbumDetailComponent;
 }());
@@ -124,6 +141,51 @@ var Album = /** @class */ (function () {
         this.id = id;
     }
     return Album;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/album.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlbumService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mock_albums__ = __webpack_require__("./src/app/mock-albums.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AlbumService = /** @class */ (function () {
+    function AlbumService() {
+    }
+    ;
+    AlbumService.prototype.getAlbums = function () {
+        return __WEBPACK_IMPORTED_MODULE_1__mock_albums__["a" /* ALBUMS */];
+    };
+    ;
+    AlbumService.prototype.getAlbumById = function (albumId) {
+        for (var i = 0; i <= __WEBPACK_IMPORTED_MODULE_1__mock_albums__["a" /* ALBUMS */].length - 1; i++) {
+            if (__WEBPACK_IMPORTED_MODULE_1__mock_albums__["a" /* ALBUMS */][i].id === albumId) {
+                return __WEBPACK_IMPORTED_MODULE_1__mock_albums__["a" /* ALBUMS */][i];
+            }
+        }
+    };
+    ;
+    AlbumService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [])
+    ], AlbumService);
+    return AlbumService;
 }());
 
 
@@ -277,7 +339,7 @@ var appRoutes = [
         component: __WEBPACK_IMPORTED_MODULE_4__album_detail_album_detail_component__["a" /* AlbumDetailComponent */]
     }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule */].forRoot(appRoutes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forRoot(appRoutes);
 
 
 /***/ }),
@@ -302,8 +364,8 @@ module.exports = "<h2>Marketplace</h2>\n\n<div *ngFor=\"let album of albums\" (c
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketplaceComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__album_model__ = __webpack_require__("./src/app/album.model.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__album_service__ = __webpack_require__("./src/app/album.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -317,33 +379,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var MarketplaceComponent = /** @class */ (function () {
-    function MarketplaceComponent(router) {
+    function MarketplaceComponent(router, albumService) {
         this.router = router;
-        this.albums = [
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Pulse', 'Pink Floyd', 'A live  album by the English progressive rock band originally released in 1995, on the label EMI in the United Kingdom.', 1),
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Funhouse', 'The Stooges', 'The second  album from the American rock band, released in 1970 by Elektra Records.', 2),
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Twilight of the Thunder God', 'Amon Amarth', 'Seventh album by the Swedish band, released in 2008, based on Thor\'s battle with the serpent Jörmungandr.', 3),
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Dilate', 'Ani DiFranco', 'Her highest-selling and most acclaimed album, released in 1996.', 4),
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Chopin - Complete Nocturnes', 'Brigitte Engerer', 'Released in 2010, this is Engerer\'s own rendition of the classical composer Chopin.', 5),
-            new __WEBPACK_IMPORTED_MODULE_1__album_model__["a" /* Album */]('Axis Bold As Love', 'The Jimi Hendrix Experience', 'Second studio album by the English-American band, released in 1967.', 6)
-        ];
+        this.albumService = albumService;
     }
+    MarketplaceComponent.prototype.ngOnInit = function () {
+        this.albums = this.albumService.getAlbums();
+    };
     MarketplaceComponent.prototype.goToDetailPage = function (clickedAlbum) {
         this.router.navigate(['albums', clickedAlbum.id]);
-        // tslint:disable-next-line:semicolon
     };
     ;
     MarketplaceComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-marketplace',
             template: __webpack_require__("./src/app/marketplace/marketplace.component.html"),
-            styles: [__webpack_require__("./src/app/marketplace/marketplace.component.css")]
+            styles: [__webpack_require__("./src/app/marketplace/marketplace.component.css")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__album_service__["a" /* AlbumService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */], __WEBPACK_IMPORTED_MODULE_2__album_service__["a" /* AlbumService */]])
     ], MarketplaceComponent);
     return MarketplaceComponent;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/app/mock-albums.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ALBUMS; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_model__ = __webpack_require__("./src/app/album.model.ts");
+
+var ALBUMS = [
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Pulse', 'Pink Floyd', 'A live  album by the English progressive rock band originally released in 1995, on the label EMI in the United Kingdom.', 1),
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Funhouse', 'The Stooges', 'The second  album from the American rock band, released in 1970 by Elektra Records.', 2),
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Twilight of the Thunder God', 'Amon Amarth', 'Seventh album by the Swedish band, released in 2008, based on Thor\'s battle with the serpent Jörmungandr.', 3),
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Dilate', 'Ani DiFranco', 'Her highest-selling and most acclaimed album, released in 1996.', 4),
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Chopin - Complete Nocturnes', 'Brigitte Engerer', 'Released in 2010, this is Engerer\'s own rendition of the classical composer Chopin.', 5),
+    new __WEBPACK_IMPORTED_MODULE_0__album_model__["a" /* Album */]('Axis Bold As Love', 'The Jimi Hendrix Experience', 'Second studio album by the English-American band, released in 1967.', 6)
+];
 
 
 /***/ }),
